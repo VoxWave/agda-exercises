@@ -8,10 +8,18 @@ data ℕ : Set where
     suc : ℕ → ℕ
 {-# BUILTIN NATURAL ℕ #-}
 
--- I edited this file
 _+_ : ℕ → ℕ → ℕ
 zero + n = n
 suc m + n = suc (m + n)
+
+_*_ : ℕ → ℕ → ℕ
+zero    * n  =  zero
+(suc m) * n  =  n + (m * n)
+
+_^_ : ℕ → ℕ → ℕ
+m ^ zero = 1
+m ^ suc n = m * (m ^ n)
+
 
 seven : ℕ
 seven = suc (suc (suc (suc (suc (suc (suc zero))))))
@@ -59,3 +67,25 @@ _ =
   ≡⟨⟩
     7
   ∎
+
+_ : 3 * 4 ≡ 12
+_ =
+  begin
+    3 * 4
+  ≡⟨⟩
+    4 + ( 2 * 4 )
+  ≡⟨⟩
+    4 + ( 4 + (1 * 4) )
+  ≡⟨⟩
+    4 + (4 + ( 4 + (0 * 4) ))
+  ≡⟨⟩
+    4 + ( 4 + ( 4 + 0))
+  ≡⟨⟩
+    12
+  ∎
+
+_ : 3 ^ 4 ≡ 81
+_ = refl
+
+_ : 2 ^ 8 ≡ 256
+_ = refl
