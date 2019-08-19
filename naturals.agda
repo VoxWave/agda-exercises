@@ -20,6 +20,92 @@ _^_ : ℕ → ℕ → ℕ
 m ^ zero = 1
 m ^ suc n = m * (m ^ n)
 
+_∸_ : ℕ → ℕ → ℕ
+m     ∸ zero   =  m
+zero  ∸ suc n  =  zero
+suc m ∸ suc n  =  m ∸ n
+
+data Bin : Set where
+  nil : Bin
+  x0_ : Bin → Bin
+  x1_ : Bin → Bin
+
+inc_ : Bin → Bin
+inc nil = x1 nil
+inc x0 rest = x1 rest
+inc x1 rest = x0 inc rest
+
+_ : inc (x1 x1 x0 x1 nil) ≡ x0 x0 x1 x1 nil
+_ = refl
+
+_ : inc (x0 nil) ≡ x1 nil
+_ = refl
+
+_ : inc (x1 nil) ≡ x0 x1 nil
+_ = refl
+
+_ : inc (x0 x1 nil) ≡ x1 x1 nil
+_ = refl
+
+_ : inc (x1 x1 nil) ≡ x0 x0 x1 nil
+_ = refl
+
+_ : inc (x0 x0 x1 nil) ≡ x1 x0 x1 nil
+_ = refl
+
+to_ : ℕ → Bin
+to zero = x0 nil
+to suc n = inc (to n)
+
+fromtrue : Bin → ℕ → ℕ
+fromtrue (nil) _ = 0
+fromtrue (x0 rest) n = fromtrue rest (n + 1)
+fromtrue (x1 rest) n = (2 ^ n) + fromtrue rest (n + 1)
+
+from_ : Bin → ℕ
+from n = fromtrue n 0
+
+_ : to 0 ≡ x0 nil
+_ = refl
+
+_ : to 1 ≡ x1 nil
+_ = refl
+
+_ : to 2 ≡ x0 x1 nil
+_ = refl
+
+_ : to 3 ≡ x1 x1 nil
+_ = refl
+
+_ : to 4 ≡ x0 x0 x1 nil
+_ = refl 
+
+_ : to 7 ≡ x1 x1 x1 nil
+_ = refl
+
+_ : from (x0 nil) ≡ 0
+_ = refl
+
+_ : from (x1 nil) ≡ 1
+_ = refl
+
+_ : from (x0 x1 nil) ≡ 2
+_ = refl
+
+_ : from (x1 x1 nil) ≡ 3
+_ = refl
+
+_ : from (x0 x0 x1 nil) ≡ 4
+_ = refl
+
+_ : from (x1 x1 x1 nil) ≡ 7
+_ = refl
+
+_ : from (to 7) ≡ 7
+_ = refl
+
+_ : to (from (x1 x1 x1 nil)) ≡ x1 x1 x1 nil
+_ = refl
 
 seven : ℕ
 seven = suc (suc (suc (suc (suc (suc (suc zero))))))
@@ -89,3 +175,31 @@ _ = refl
 
 _ : 2 ^ 8 ≡ 256
 _ = refl
+
+_ : 5 ∸ 3 ≡ 2
+_ =
+  begin
+    5 ∸ 3
+  ≡⟨⟩
+    4 ∸ 2
+  ≡⟨⟩
+    3 ∸ 1
+  ≡⟨⟩
+    2 ∸ 0
+  ≡⟨⟩
+    2
+  ∎
+
+_ : 3 ∸ 5 ≡ 0
+_ =
+  begin
+    3 ∸ 5
+  ≡⟨⟩
+    2 ∸ 4
+  ≡⟨⟩
+    1 ∸ 3
+  ≡⟨⟩
+    0 ∸ 2
+  ≡⟨⟩
+    0
+  ∎
