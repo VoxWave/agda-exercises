@@ -25,4 +25,33 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
     suc m + (n + p)
   ∎
 
-  
++-identityʳ : ∀ (m : ℕ) → m + zero ≡ m
++-identityʳ zero =
+  begin
+    zero + zero
+  ≡⟨⟩
+    zero
+  ∎
++-identityʳ (suc m) =
+  begin
+    suc m + zero
+  ≡⟨⟩
+    suc (m + zero)
+  ≡⟨ cong suc (+-identityʳ m)⟩
+    suc m
+  ∎
+
++-suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
++-suc zero n =
+  begin
+    zero + suc n
+  ≡⟨⟩
+    suc n
+  ≡⟨⟩
+    suc (zero + n)
+  ∎
++-suc (suc m) n =
+  begin
+    suc m + suc n
+  ≡⟨⟩
+    suc (m + suc n)
