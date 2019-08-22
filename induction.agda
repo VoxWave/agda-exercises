@@ -54,4 +54,9 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
   begin
     suc m + suc n
   ≡⟨⟩
-    suc (m + suc n)
+    suc ( m + suc n )
+  ≡⟨ cong suc (+-suc m n)⟩
+    suc ( suc ( m + n ) )
+  ≡⟨⟩
+    suc( (suc m) + n )
+  ∎
