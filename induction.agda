@@ -4,14 +4,14 @@ open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; _≡⟨_⟩_; _∎)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 
 +-assoc : ∀ (m n p : ℕ) → (m + n) + p ≡ m + (n + p)
-+-assoc zero n p =
-  begin
-    (zero + n) + p
-  ≡⟨⟩
-    n + p
-  ≡⟨⟩
-    zero + (n + p)
-  ∎
++-assoc zero n p = refl
+  -- begin
+  --   (zero + n) + p
+  -- ≡⟨⟩
+  --   n + p
+  -- ≡⟨⟩
+  --   zero + (n + p)
+  -- ∎
 +-assoc (suc m) n p =
   begin
     (suc m + n) + p
@@ -80,4 +80,21 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
   ≡⟨⟩
     suc n + m
   ∎
-    
+
++-rearrange : ∀ (m n p q : ℕ) → (m + n) + (p + q) ≡ m + (n + p) + q
++-rearrange m n p q =
+  begin
+    (m + n) + (p + q)
+  ≡⟨ +-assoc m n (p + q) ⟩
+    m + (n + (p + q))
+  ≡⟨ cong (m +_) (sym (+-assoc n p q)) ⟩
+    m + ((n + p) + q)
+  ≡⟨ sym (+-assoc m (n + p) q) ⟩
+    (m + (n + p)) + q
+  ≡⟨⟩
+    m + (n + p) + q
+  ∎
+
++-assoc´ : ∀ (m n p : ℕ) → (m + n) + p ≡ m + (n + p)
++-assoc´ zero n p = refl
++-assoc´ (suc m) n p  rewrite +-assoc´ m n p = refl
