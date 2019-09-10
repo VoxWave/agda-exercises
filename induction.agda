@@ -119,6 +119,10 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 *-distrib-+ zero n p = refl
 *-distrib-+ (suc m) n p rewrite *-distrib-+ m n p | +-assoc´ p (m * p) (n * p) = refl
 
+*-distrib-+' : ∀ (m n p : ℕ) → p * (m + n) ≡ p * m + p * n
+*-distrib-+' zero n p = {!!}
+*-distrib-+' (suc m) n p = {!!}
+
 *-assoc : ∀ (m n p : ℕ) → (m * n) * p ≡ m * (n * p)
 *-assoc zero n p = refl
 *-assoc (suc m) n p rewrite *-distrib-+ n (m * n) p | *-assoc m n p = refl
@@ -127,13 +131,20 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 *-identityʳ zero = refl
 *-identityʳ (suc m) rewrite *-identityʳ m = refl
 
-*-identity : ∀ (m : ℕ) -> m ≡ m * 1
+*-identity : ∀ (m : ℕ) → m ≡ m * 1
 *-identity zero = refl
 *-identity (suc m) rewrite sym (*-identity m) = refl
 
-*-suc : ∀ (m n : ℕ) -> n + m * n ≡ n * suc m
-*-suc zero n rewrite +-identityʳ n | sym (*-identity n) = refl
-*-suc (suc m) n rewrite *-suc m n | sym (*-suc n m) = {!!}
++-sucisplusone : ∀ (x : ℕ) → suc x ≡ x + 1
++-sucisplusone zero rewrite +-identity´ 1 = refl
++-sucisplusone (suc x) rewrite +-sucisplusone x = refl
+
+*-nmsuc : ∀ (m n : ℕ) → n + m * suc n ≡ m + n * suc m
+*-nmsuc m n rewrite +-sucisplusone n | +-sucisplusone m | *-distrib-+' n 1 m | *-distrib-+' m 1 n | sym (*-identity m) | sym (*-identity n) | +-comm´ (m * n) m | +-comm´ (n * m) n | sym (+-assoc´ n m (m * n)) | sym (+-assoc´ m n (n * m))| +-comm´ m n = {!!}
+
+*-suc : ∀ (m n : ℕ) → n + m * n ≡ n * suc m
+*-suc m zero rewrite *-identityʳ m = refl
+*-suc m (suc n) rewrite *-suc m n | *-nmsuc m n = refl
 
 *-comm : ∀ (m n : ℕ) → m * n ≡ n * m
 *-comm zero n rewrite *-identityʳ n = refl
