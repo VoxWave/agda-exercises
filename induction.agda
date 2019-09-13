@@ -137,7 +137,7 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 
 *-distrib-+' : ∀ (m n p : ℕ) → p * (m + n) ≡ p * m + p * n
 *-distrib-+' zero n p rewrite *-identityʳ p | +-comm´ 0 p = refl
-*-distrib-+' (suc m) n p rewrite *-suc (m + n) p | *-distrib-+ m n p = {!!}
+*-distrib-+' (suc m) n p rewrite *-suc m p | *-suc (m + n) p | *-distrib-+' m n p | +-assoc p (p * m) (p * n) = refl
 
 +-sucisplusone : ∀ (x : ℕ) → suc x ≡ x + 1
 +-sucisplusone zero rewrite +-identity´ 1 = refl
@@ -146,3 +146,13 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 *-comm : ∀ (m n : ℕ) → m * n ≡ n * m
 *-comm zero n rewrite *-identityʳ n = refl
 *-comm (suc m) n rewrite *-comm m n | +-sucisplusone m | *-distrib-+' m 1 n | sym (*-identity n) | +-comm n (n * m) = refl
+
+0∸n≡0 : ∀ (n : ℕ) → 0 ∸ n ≡ 0
+0∸n≡0 zero = refl
+0∸n≡0 (suc n) = refl
+
+∸-|-assoc : ∀ (m n p : ℕ) → m ∸ n ∸ p ≡ m ∸ (n + p)
+∸-|-assoc zero n p rewrite 0∸n≡0 n | 0∸n≡0 p | 0∸n≡0 (n + p) = refl
+∸-|-assoc (suc m) zero p = refl
+∸-|-assoc (suc m) (suc n) zero rewrite +-identity´ n = refl
+∸-|-assoc (suc m) (suc n) (suc p) rewrite +-sucisplusone p | sym (+-assoc n p 1) = {!!}
