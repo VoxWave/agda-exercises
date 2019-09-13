@@ -160,5 +160,4 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 ∸-|-assoc : ∀ (m n p : ℕ) → m ∸ n ∸ p ≡ m ∸ (n + p)
 ∸-|-assoc zero n p rewrite 0∸n≡0 n | 0∸n≡0 p | 0∸n≡0 (n + p) = refl
 ∸-|-assoc (suc m) zero p = refl
-∸-|-assoc (suc m) (suc n) zero rewrite +-identity´ n = refl
-∸-|-assoc (suc m) (suc n) (suc p) rewrite +-sucisplusone p | ∸-|-assoc m n (p + 1) | sym (+-assoc n p 1) = refl
+∸-|-assoc (suc m) (suc n) p rewrite ∸-|-assoc m n p = refl
