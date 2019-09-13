@@ -151,8 +151,14 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 0∸n≡0 zero = refl
 0∸n≡0 (suc n) = refl
 
+-- ∸-|-assoc : ∀ (m n p : ℕ) → m ∸ n ∸ p ≡ m ∸ (n + p)
+-- ∸-|-assoc zero n p rewrite 0∸n≡0 n | 0∸n≡0 p | 0∸n≡0 (n + p) = refl
+-- ∸-|-assoc (suc m) zero p = refl
+-- ∸-|-assoc (suc m) (suc n) zero rewrite +-identity´ n = refl
+-- ∸-|-assoc (suc m) (suc n) (suc p) rewrite +-sucisplusone p | sym (+-assoc n p 1) | sym (∸-|-assoc m (n + p) 1) | sym (∸-|-assoc m n p) | ∸-|-assoc m n (p + 1) | sym (+-assoc n p 1) | sym (∸-|-assoc m (n + p) 1) | sym (∸-|-assoc m n p) = refl
+
 ∸-|-assoc : ∀ (m n p : ℕ) → m ∸ n ∸ p ≡ m ∸ (n + p)
 ∸-|-assoc zero n p rewrite 0∸n≡0 n | 0∸n≡0 p | 0∸n≡0 (n + p) = refl
 ∸-|-assoc (suc m) zero p = refl
 ∸-|-assoc (suc m) (suc n) zero rewrite +-identity´ n = refl
-∸-|-assoc (suc m) (suc n) (suc p) rewrite +-sucisplusone p | sym (+-assoc n p 1) = {!!}
+∸-|-assoc (suc m) (suc n) (suc p) rewrite +-sucisplusone p | ∸-|-assoc m n (p + 1) | sym (+-assoc n p 1) = refl
