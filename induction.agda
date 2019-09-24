@@ -1,7 +1,7 @@
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl; cong; sym)
 open Eq.≡-Reasoning using (begin_; _≡⟨⟩_; _≡⟨_⟩_; _∎)
-open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
+open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_; _^_)
 
 +-assoc : ∀ (m n p : ℕ) → (m + n) + p ≡ m + (n + p)
 +-assoc zero n p = refl
@@ -161,3 +161,27 @@ open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _∸_)
 ∸-|-assoc zero n p rewrite 0∸n≡0 n | 0∸n≡0 p | 0∸n≡0 (n + p) = refl
 ∸-|-assoc (suc m) zero p = refl
 ∸-|-assoc (suc m) (suc n) p rewrite ∸-|-assoc m n p = refl
+
+-- suc^ : ∀ (m n : ℕ) → suc m ^ n ≡ (1 + m)^n
+
+asdf : ∀ (m n p : ℕ) → (suc m ^ n) * (suc m ^ p) + (suc m ^ n) * (m * (suc m ^ p)) + m * ((suc m ^ n) * (suc m ^ p) + (suc m ^ n) * (m * (suc m ^ p)))
+                     ≡
+                       ((suc m ^ n) + m * (suc m ^ n)) * ((suc m ^ p) + m * (suc m ^ p))
+asdf m n p = {!!}
+
++*^-1 : ∀ (m n p : ℕ) → m ^ (n + p) ≡ (m ^ n) * (m ^ p)
++*^-1 zero zero zero = refl
++*^-1 zero zero (suc p) = refl
++*^-1 zero (suc n) p = refl
++*^-1 (suc m) zero p rewrite +-identity´(suc m ^ p) = refl
++*^-1 (suc m) (suc n) zero rewrite +-identity´ n | sym (*-identity ((suc m ^ n) + m * (suc m ^ n))) = refl
++*^-1 (suc m) (suc n) (suc p) rewrite +*^-1 (suc m) n (suc p) |
+                                      *-distrib-+' (suc m ^ p) (m * (suc m ^ p)) (suc m ^ n) |
+                                      *-distrib-+' ((suc m ^ n) * (suc m ^ p)) ((suc m ^ n) * (m * (suc m ^ p))) m
+                                      = {!!}
+
++*^-2 : ∀ (m n p : ℕ) → (m * n) ^ p ≡ (m ^ p) * (n ^ p)
++*^-2 m n p = {!!}
+
++*^-3 : ∀ (m n p : ℕ) → m ^ (n * p) ≡ (m ^ n) ^ p
++*^-3 m n p = {!!}
